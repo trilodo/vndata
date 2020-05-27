@@ -37,4 +37,12 @@
 # exit
 # ip gateway <GATEWAY>
 
+5. Config telnet:
+#hostname Switch1
+Switch1(config)#line vty 0 4
+Switch1(config-line)#password 123456
+Switch1(config-line)#login
+Switch1(config-line)#exit
+Switch1(config-line)#enable password level 7 Cisco123$
 
+#service password-encryption
