@@ -1,2 +1,40 @@
 1. Config uplink:
-2. Config 
+
+# conf t 
+# int gi1/0/47
+# switchport trunk encap dot1q
+# switchport mode trunk 
+# channel-group <number> mode <ether-mode>
+
+# int gi1/0/48
+# switchport trunk encap dot1q
+# switchport mode trunk 
+# channel-group <number> mode <ether-mode>
+
+# int po1 (là số number set ở trên)
+# switchport trunk encap dot1q
+# switchport mode trunk
+# description UPLINK 
+
+2. Config access port range:
+
+# conf t 
+# int range gi1/1-46
+# switchport mode access 
+# switchport access vlan 200
+
+3. Create vlan:
+
+# conf t 
+# vlan 200
+# name VLAN200 <— đặt gì cũng dc 
+
+4. Config management IP
+
+# conf t
+# int vlanxxx (vlan gán ip management)
+# ip addr <IP> <NETMASK>
+# exit
+# ip gateway <GATEWAY>
+
+
