@@ -1,3 +1,56 @@
 1. OS setup:
+
+- Set hostname.
+- Config IP.
+- Add hosts file.
+- Check time.
+- Disable firewall (or allow filewall rules).
+- Install packages:
+      yum install centos-release-gluster -y
+      yum install epel-release -y
+      yum install glusterfs-server -y
+      systemctl start glusterd
+      systemctl enable glusterd
+- Create trusted pool:
+   gluster peer probe g02
+   gluster peer probe arbitor
+   gluster peer status
+   gluster pool list
+   
 2. Brick prepare:
+
+- Create thin vlm volume for each disk for support snapshot
+   pvcreate /dev/sdb
+   vgcreate vg_gluster /dev/sdb
+   # remember change to your disk size
+   lvcreate -L 9G -T vg_gluster/thinpool
+   lvcreate -V 9G -T vg_gluster/thinpool -n vol1
+   mkfs.xfs /dev/vg_gluster/vol1
+- Mount to brick directory
+   mkdir -p /data/vht/brick1/brick
+   mount /dev/vg_gluster/vol1 /data/vht/brick1
+   # add to fstab file
+   echo "/dev/vg_gluster/vol1   /data/vht/brick1        xfs     defaults    0 0" >> /etc/fstab
+-  Create brick dir:
+   mkdir /data/vht/brick1/brick
+
 3. Create volume:
+
+- Run command to create gluster volume on one node in pool:
+  gluster volume create vht-vol replica 3 arbiter 1 transport tcp g01:/data/vht/brick1/brick g02:/data/vht/brick1/brick arbitor:/data/vht/brick1/brick
+  gluster volume start vht-vol
+  gluster volume info all
+
+
+4. Mount client:
+
+- Install glusterfs file system support:
+  yum install glusterfs glusterfs-fuse attr -y
+- Create mount point and mount:
+  mkdir /mnt/vht-data
+  mount -t glusterfs g01:/vht-vol /mnt/vht-data
+- Test snapshot function:
+   gluster snapshot create snap-vht-vol vht-vol
+   gluster snapshot list vht-vol
+   
+- Windows client:
