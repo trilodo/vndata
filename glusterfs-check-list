@@ -27,7 +27,7 @@
    lvcreate -V 9G -T vg_gluster/thinpool -n vol1
    mkfs.xfs /dev/vg_gluster/vol1
 - Mount to brick directory
-   mkdir -p /data/vht/brick1/brick
+   mkdir -p /data/vht/brick1
    mount /dev/vg_gluster/vol1 /data/vht/brick1
    # add to fstab file
    echo "/dev/vg_gluster/vol1   /data/vht/brick1        xfs     defaults    0 0" >> /etc/fstab
@@ -37,7 +37,7 @@
 3. Create volume:
 
 - Run command to create gluster volume on one node in pool:
-  gluster volume create vht-vol replica 3 arbiter 1 transport tcp g01:/data/vht/brick1/brick g02:/data/vht/brick1/brick arbitor:/data/vht/brick1/brick
+  gluster volume create vht-vol replica 3 arbiter 1 transport tcp g01:/data/vht/brick1/brick g02:/data/vht/brick1/brick arbiter:/data/vht/brick1/brick
   gluster volume start vht-vol
   gluster volume info all
 
