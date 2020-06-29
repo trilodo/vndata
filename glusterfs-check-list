@@ -49,6 +49,10 @@
 - Create mount point and mount:
   mkdir /mnt/vht-data
   mount -t glusterfs g01:/vht-vol /mnt/vht-data
+  #For backup mount option:
+  mount -t glusterfs -o backupvolfile-server=g02,use-readdirp=no,fetch-attempts=2,log-level=WARNING,log-file=/var/log/gluster.log g01:/vht-vol /mnt/vht-data
+  # add this line to /etc/fstab file 
+  echo 'g01:/vht-vol /mnt/vht-data glusterfs defaults,_netdev,backupvolfile-server=g02,use-readdirp=no,fetch-attempts=2,log-level=WARNING,log-file=/var/log/gluster.log 0 0' >> /etc/fstab
 - Test snapshot function:
    gluster snapshot create snap-vht-vol vht-vol
    gluster snapshot list vht-vol
