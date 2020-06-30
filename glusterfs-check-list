@@ -57,4 +57,16 @@
    gluster snapshot create snap-vht-vol vht-vol
    gluster snapshot list vht-vol
    
-- Windows client:
+5. How to mount volume in client os:
+1. Bước 1: Add hosts file
+172.16.99.127	g01
+172.16.99.128	g02
+2. Bước 2: Cài gói glusterfs
+  yum install glusterfs glusterfs-fuse attr -y
+3. Bước 3: Tạo mount point
+  mkdir /vht-data (hoặc tên thư mục tùy chọn)
+  mount -t glusterfs -o backupvolfile-server=g02,use-readdirp=no,fetch-attempts=2,log-level=WARNING,log-file=/var/log/gluster.log g01:/vht-vol /vht-data
+4. Bước 4: Add vào /etc/fstab để mount on boot
+   echo 'g01:/vht-vol /vht-data glusterfs defaults,_netdev,backupvolfile-server=g02,use-readdirp=no,fetch-attempts=2,log-level=WARNING,log-file=/var/log/gluster.log 0 0' >> /etc/fstab
+
+
