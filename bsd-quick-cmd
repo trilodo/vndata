@@ -1,1 +1,9 @@
-
+View CPU Processes: 
+top -aSH
+View Interrupt Counters:
+systat -vmstat 1
+vmstat -i
+View mbuf Usage:
+netstat -m
+Networks errors
+netstat -ihw 1
